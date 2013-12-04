@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas {
+        border: 1px solid #9C9898;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js"></script>
+    <script defer="defer">
+
+      window.onload = function() {
+        var stage = new Kinetic.Stage({
+          container: 'container',
+          width: 578,
+          height: 200
+        });
+
+
+
+        var layer = new Kinetic.Layer();
+
+        /*
+         * leave center point positioned
+         * at the default which is the top left
+         * corner of the rectangle
+         */
+    
+        var redRect = new Kinetic.Rect({
+          x: 0,
+          y: 75,
+          width: 100,
+          height: 50,
+          fill: 'red',
+          stroke: 'black',
+          strokeWidth: 4,
+          
+        });
+
+        var text = new Kinetic.Text({
+        x: 10,
+        y: 10,
+        fontFamily: 'Calibri',
+        fontSize: 24,
+        text: '',
+        fill: 'black'
+      });
+         function writeMessage(message) {
+        text.setText(message);
+        layer.add(text);
+        stage.add(layer);
+      }
+        layer.add(redRect);
+        stage.add(layer);
+
+        var velocity = 2;
+        var time =2;
+        var anim = new Kinetic.Animation(function(frame) {
+          var dist = velocity *time;
+          var currdist=velocity*(frame.time/1000)
+          writeMessage(currdist);
+          redRect.move(dist,0);
+        }, layer);
+
+        anim.start();
+      };
+    </script>
+  </body>
+</html>
