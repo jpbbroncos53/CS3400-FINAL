@@ -2,6 +2,10 @@ html, body {
 	height: 100%;
 }
 
+h1 > small {
+	font-size: 50%;
+}
+
 .container {
 	padding: 0 15px;
 	height: 100%;
@@ -20,8 +24,8 @@ html, body {
 	height: 100%;
 }
 
-h1 > small {
-	font-size: 50%;
+.input-group {
+	margin-bottom: 10px;
 }
 
 @media only screen and (max-device-width: 480px) {

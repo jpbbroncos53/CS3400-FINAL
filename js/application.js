@@ -32,6 +32,26 @@ $('.nav > li').click(function () {
 		$('.nav > li').removeClass('active');
 		$(this).addClass('active');
 	}
+
+	$('.input-group').hide();
+
+	switch ($('.nav > li.active > a').attr('href')) {
+		case '#density':
+			$('#mass').parent().show(); $('#vol').parent().show();
+			break;
+		case '#velocity':
+			$('#dist').parent().show(); $('#time').parent().show();
+			break;
+		case '#angvelocity':
+			$('#dist').parent().show(); $('#time').parent().show();
+			break;
+		case '#osc':
+			$('#amp').parent().show(); $('#period').parent().show();
+			break;
+		default:
+			break;
+	}
+
 });
 
 // Handle form button
@@ -41,9 +61,9 @@ $('#calc').click(function () {
 
 // Handle enter key pressed (just calls button event)
 $('.form-control').keyup(function (event) {
-    if (event.keyCode == 13) {
-        $('#calc').click();
-    }
+		if (event.keyCode == 13) {
+				$('#calc').click();
+		}
 });
 
 /************************************************
@@ -60,13 +80,13 @@ function calculate ()
 			density($('#mass').val(), $('#vol').val());
 			break;
 		case '#velocity':
-			lin_velocity($('#mass').val(), $('#vol').val());
+			lin_velocity($('#dist').val(), $('#time').val());
 			break;
 		case '#angvelocity':
-			angvel($('#mass').val(), $('#vol').val());
+			angvel($('#dist').val(), $('#time').val());
 			break;
 		case '#osc':
-			osc($('#mass').val(), $('#vol').val());
+			osc($('#amp').val(), $('#period').val());
 			break;
 		case '#acc':
 			accel($('#mass').val());
@@ -76,68 +96,101 @@ function calculate ()
 	}
 }
 
-function osc (amp, per) {
-	// body...
+// Calculate an object's oscillation. Shape will
+// move back and forth in the center of the stage
+// according to its amplitude and period
+function osc (amp, per)
+{
+	// Clear canvas first
 	layer.destroyChildren()
-	 var hexagon = new Kinetic.RegularPolygon({
-        x: stage.getWidth() / 2,
-        y: stage.getHeight() / 2,
-        sides: 6,
-        radius: 70,
-        fill: 'red',
-        stroke: 'black',
-        strokeWidth: 4
-      });
 
-      layer.add(hexagon);
-      stage.add(layer);
+	// Create hexagon
+	var hexagon = new Kinetic.RegularPolygon({
+		x: stage.getWidth() / 2,
+		y: stage.getHeight() / 2,
+		sides: 6,
+		radius: 70,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: 2
+	});
 
-      var amplitude = amp;
-      var period = per;
-      // in ms
-      var centerX = stage.getWidth() / 2;
+	// Draw hexagon
+	layer.add(hexagon);
 
-      var anim = new Kinetic.Animation(function(frame) {
-        hexagon.setX(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + centerX);
-      }, layer);
+	// Amplitude bounds
+	if (amp > (canvasWidth / 2) - 70) { amp = (canvasWidth / 2) - 70; }
+	if (amp < 0) { amp = 0; }
 
-      anim.start();
-	
+	// Create the animation
+	var anim = new Kinetic.Animation(function (frame) {
+
+		hexagon.setX(amp * Math.sin(frame.time * Math.PI / per) + (canvasWidth / 2));
+
+	}, layer);
+
+	// Render the stage
+	stage.draw();
+
+	// Start the animation
+	anim.start();
 }
 
-function angvel (radians, sec) {
-	// body...
-
+// Calculate an object's angular velocity. Shape
+// will rotate at correct speed in the center
+// of the canvas
+function angvel (radians, sec)
+{
+	// Clear canvas first
 	layer.destroyChildren();		
 
-        var redRect = new Kinetic.Rect({
-          x: stage.getWidth()/2,
-          y: stage.getHeight()/2,
-          width: 100,
-          height: 4,
-          fill: 'red',
-          stroke: 'black',
-          strokeWidth: 4,
-          
-        });
+	// Create the rectangle	
+	var rect = new Kinetic.Rect({
+		x: canvasWidth / 2,
+		y: canvasHeight / 2,
+		width: 100,
+		height: 2,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: 2
+	});
+				
+	// Draw the rectangle
+	layer.add(rect);
 
-        
-        layer.add(redRect);
-        stage.add(layer);
+	// Calculate angular speed
+	var angularSpeed = radians/sec;
 
-        // one revolution per 4 seconds
-        //speed in radians/sec, rad/s is 9.55 rpm
-        var angularSpeed = radians/sec;
-        var anim = new Kinetic.Animation(function(frame) {
-          var angleDiff = frame.timeDiff * angularSpeed / 1000;
-          redRect.rotate(angleDiff);
-        }, layer);
+	// Create the animation
+	var anim = new Kinetic.Animation(function(frame) {
 
-        anim.start();
-      };
+		var angleDiff = frame.timeDiff * angularSpeed / 1000;
+		rect.rotate(angleDiff);
+
+	}, layer);
+
+	// Create the text
+	var text = new Kinetic.Text({
+		x: 0,
+		y: 0,
+		width: canvasWidth,
+		fontSize: 32,
+		align: 'center',
+		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) +"m/s",
+		listening: false,
+		fill: 'black'
+	});
+
+	// Draw the text
+	layer.add(text);
+
+	// Render the stage
+	stage.draw();
+
+	// Start the animation
+	anim.start();
+};
 	
-
-
 // Calculate an object's density. Shade scale is
 // based on values from 0 (rare) to 100 (dense)
 function density (mass, volume)
@@ -174,79 +227,78 @@ function density (mass, volume)
 
 	// Create the text
 	var text = new Kinetic.Text({
-      x: 0,
-      y: 0,
-      width: canvasWidth,
-      fontSize: 32,
-      align: 'center',
-      text: 'Density: ' + density,
-      listening: false,
-      fill: 'black'
-    });
+			x: 0,
+			y: 0,
+			width: canvasWidth,
+			fontSize: 32,
+			align: 'center',
+			text: 'Density: ' + density,
+			listening: false,
+			fill: 'black'
+		});
 
 	// Draw the text
-    layer.add(text);
+	layer.add(text);
 
-    // Render the stage
-    stage.draw();
+	// Render the stage
+	stage.draw();
 }
 
-function lin_velocity (dis, tim) {
-	// body...    
-
+// Calculate an object's linear velocity. Shape
+// will move at correct speed to opposite side
+// of the canvas
+function lin_velocity (dist, time)
+{
+	// Clear canvas first
 	layer.destroyChildren();
 
+	// Create the rectangle
+	var rect = new Kinetic.Rect({
+		x: 20,
+		y: canvasHeight / 2,
+		width: 100,
+		height: 50,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: 2
+	});
 
-       
+	// Draw the rectangle
+	layer.add(rect);
 
-        /*
-         * leave center point positioned
-         * at the default which is the top left
-         * corner of the rectangle
-         */
+	var velocity = dist / time;
 
-         
-    
-        var redRect = new Kinetic.Rect({
-          x: 0,
-          y: 75,
-          width: 100,
-          height: 50,
-          fill: 'red',
-          stroke: 'black',
-          strokeWidth: 4,
-          
-        });
+	// Create the animation
+	var anim = new Kinetic.Animation(function (frame) {
 
-     
-        layer.add(redRect);
-        stage.add(layer);
+		var moveDist = velocity * (frame.timeDiff / 100);
+		if (!((rect.getX() + moveDist) > (canvasWidth - 120))) {
+			rect.move(moveDist, 0);
+		}
 
-        var velocity = dis/tim;
-        
-        var anim = new Kinetic.Animation(function(frame) {
-          
-          var currdist=velocity*(frame.time/1000)
-          
-          redRect.move(currdist,0);
-        }, layer);
+	}, layer);
 
-        var text = new Kinetic.Text({
-      x: 0,
-      y: 0,
-      width: canvasWidth,
-      fontSize: 32,
-      align: 'center',
-      text: 'Velocity: ' + velocity +"m/s",
-      listening: false,
-      fill: 'black'
-    });
+	// Create the text
+	var text = new Kinetic.Text({
+		x: 0,
+		y: 0,
+		width: canvasWidth,
+		fontSize: 32,
+		align: 'center',
+		text: 'Velocity: ' + (Math.round(velocity * 100) / 100) +"m/s",
+		listening: false,
+		fill: 'black'
+	});
 
 	// Draw the text
-    layer.add(text);
+	layer.add(text);
 
-        anim.start();
-      };
+	// Render the stage
+	stage.draw();
+
+	// Start the animation
+	anim.start();
+};
 
   function accel (gravity) {
   	// body...
