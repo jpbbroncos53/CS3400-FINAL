@@ -48,6 +48,9 @@ $('.nav > li').click(function () {
 		case '#osc':
 			$('#amp').parent().show(); $('#period').parent().show();
 			break;
+		case '#acc':
+			$('#gravity').parent().show();
+			break;
 		default:
 			break;
 	}
@@ -89,7 +92,7 @@ function calculate ()
 			osc($('#amp').val(), $('#period').val());
 			break;
 		case '#acc':
-			accel($('#mass').val());
+			accel($('#gravity').val());
 			break;
 		default:
 			break;
