@@ -68,6 +68,9 @@ function calculate ()
 		case '#osc':
 			osc($('#mass').val(), $('#vol').val());
 			break;
+		case '#acc':
+			accel($('#mass').val());
+			break;
 		default:
 			break;
 	}
@@ -244,4 +247,40 @@ function lin_velocity (dis, tim) {
 
         anim.start();
       };
+
+  function accel (gravity) {
+  	// body...
+  	var redRect = new Kinetic.Rect({
+       x: 239,
+        y: 0,
+        width: 100,
+        height: 50,
+          fill: 'red',
+          stroke: 'black',
+          strokeWidth: 4,
+          
+        });
+
+  		layer.add(redRect);
+        stage.add(layer);
+
+        // one revolution per 4 seconds
+        //speed in radians/sec, rad/s is 9.55 rpm
+        
+        var anim = new Kinetic.Animation(function(frame) {
+        	
+
+        	redRect.setY(0.5 * gravity * Math.pow(frame.time / 1000, 2));
+
+        	 if(redRect.y > canvasHeight- redRect.height / 2) {
+          redRect.setY(canvasHeight - redRect.height / 2);
+        }
+        
+          
+        }, layer);
+
+        anim.start();
+      };
+
+  
 
