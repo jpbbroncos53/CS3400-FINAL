@@ -59,6 +59,9 @@ function calculate ()
 		case '#density':
 			density($('#mass').val(), $('#vol').val());
 			break;
+		case '#velocity':
+			lin_velocity($('#mass').val(), $('#vol').val());
+			break;
 		default:
 			break;
 	}
@@ -116,3 +119,61 @@ function density (mass, volume)
     // Render the stage
     stage.draw();
 }
+
+function lin_velocity (dis, tim) {
+	// body...    
+
+	layer.destroyChildren();
+
+
+       
+
+        /*
+         * leave center point positioned
+         * at the default which is the top left
+         * corner of the rectangle
+         */
+
+         
+    
+        var redRect = new Kinetic.Rect({
+          x: 0,
+          y: 75,
+          width: 100,
+          height: 50,
+          fill: 'red',
+          stroke: 'black',
+          strokeWidth: 4,
+          
+        });
+
+     
+        layer.add(redRect);
+        stage.add(layer);
+
+        var velocity = dis/tim;
+        
+        var anim = new Kinetic.Animation(function(frame) {
+          
+          var currdist=velocity*(frame.time/1000)
+          
+          redRect.move(currdist,0);
+        }, layer);
+
+        var text = new Kinetic.Text({
+      x: 0,
+      y: 0,
+      width: canvasWidth,
+      fontSize: 32,
+      align: 'center',
+      text: 'Velocity: ' + velocity +"m/s",
+      listening: false,
+      fill: 'black'
+    });
+
+	// Draw the text
+    layer.add(text);
+
+        anim.start();
+      };
+
