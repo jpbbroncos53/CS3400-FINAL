@@ -28,13 +28,16 @@ $('.kineticjs-content').css('border', '1px solid #eee');
 
 // Handle selection on the navbar
 $('.nav > li').click(function () {
+	// Selection routine
 	if (!$(this).hasClass('active')) {
 		$('.nav > li').removeClass('active');
 		$(this).addClass('active');
 	}
 
+	// Hide all inputs
 	$('.input-group').hide();
 
+	// Show only necessary field for selected equation
 	switch ($('.nav > li.active > a').attr('href')) {
 		case '#density':
 			$('#mass').parent().show(); $('#vol').parent().show();
@@ -50,8 +53,6 @@ $('.nav > li').click(function () {
 			break;
 		case '#acc':
 			$('#gravity').parent().show();
-			break;
-		default:
 			break;
 	}
 
@@ -94,8 +95,6 @@ function calculate ()
 		case '#acc':
 			accel($('#gravity').val());
 			break;
-		default:
-			break;
 	}
 }
 
@@ -121,6 +120,13 @@ function osc (amp, per)
 	// Draw hexagon
 	layer.add(hexagon);
 
+	// Save oscillation
+	var oscillation = amp / per;
+
+	// Scale up inputs
+	amp = amp * 50;
+	per = per * 100;
+
 	// Amplitude bounds
 	if (amp > (canvasWidth / 2) - 70) { amp = (canvasWidth / 2) - 70; }
 	if (amp < 0) { amp = 0; }
@@ -131,6 +137,21 @@ function osc (amp, per)
 		hexagon.setX(amp * Math.sin(frame.time * Math.PI / per) + (canvasWidth / 2));
 
 	}, layer);
+
+	// Create the text
+	var text = new Kinetic.Text({
+		x: 0,
+		y: 0,
+		width: canvasWidth,
+		fontSize: 32,
+		align: 'center',
+		text: 'Oscillation: ' + (Math.round(oscillation * 100) / 100) +"m/s",
+		listening: false,
+		fill: 'black'
+	});
+
+	// Draw the text
+	layer.add(text);
 
 	// Render the stage
 	stage.draw();
@@ -235,7 +256,7 @@ function density (mass, volume)
 			width: canvasWidth,
 			fontSize: 32,
 			align: 'center',
-			text: 'Density: ' + density,
+			text: 'Density: ' + density + "kg/l",
 			listening: false,
 			fill: 'black'
 		});
