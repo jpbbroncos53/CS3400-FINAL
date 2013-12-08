@@ -34,8 +34,8 @@
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Eq. 1</a></li>
-						<li><a href="#">Eq. 2</a></li>
+						<li class="active"><a href="#density">Density</a></li>
+						<li><a href="#other">Eq. 2</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -44,7 +44,20 @@
 		<!-- CONTENT ____________________________ -->
 		<div class="row fill">
 			<div class="col-md-4">
-				<h3 style="color: #999;">Text Area</h3>
+				<div class="input-group">
+					<span class="input-group-addon">Mass</span>
+					<input type="text" class="form-control" id="mass">
+				</div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon">Volume</span>
+					<input type="text" class="form-control" id="vol">
+				</div>
+				<br>
+				<div class="btn-group pull-right">
+					<button class="btn btn-default" id="calc">Calculate</button>
+				</div>
+				<br>
 			</div>
 			<div id="canvas-div" class="col-md-8">
 				<!-- canvas is placed by KineticJS -->

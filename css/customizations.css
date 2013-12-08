@@ -16,6 +16,7 @@ html, body {
 }
 
 .col-md-8 {
+	min-height: 300px;
 	height: 100%;
 }
 
@@ -24,8 +25,8 @@ h1 > small {
 }
 
 @media only screen and (max-device-width: 480px) {
-	.col-md-8 {
-		min-height: 300px;
+	.col-md-4 {
+		margin-bottom: 20px;
 	}
 
 	small:before {
