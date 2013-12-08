@@ -62,10 +62,78 @@ function calculate ()
 		case '#velocity':
 			lin_velocity($('#mass').val(), $('#vol').val());
 			break;
+		case '#angvelocity':
+			angvel($('#mass').val(), $('#vol').val());
+			break;
+		case '#osc':
+			osc($('#mass').val(), $('#vol').val());
+			break;
 		default:
 			break;
 	}
 }
+
+function osc (amp, per) {
+	// body...
+	layer.destroyChildren()
+	 var hexagon = new Kinetic.RegularPolygon({
+        x: stage.getWidth() / 2,
+        y: stage.getHeight() / 2,
+        sides: 6,
+        radius: 70,
+        fill: 'red',
+        stroke: 'black',
+        strokeWidth: 4
+      });
+
+      layer.add(hexagon);
+      stage.add(layer);
+
+      var amplitude = amp;
+      var period = per;
+      // in ms
+      var centerX = stage.getWidth() / 2;
+
+      var anim = new Kinetic.Animation(function(frame) {
+        hexagon.setX(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + centerX);
+      }, layer);
+
+      anim.start();
+	
+}
+
+function angvel (radians, sec) {
+	// body...
+
+	layer.destroyChildren();		
+
+        var redRect = new Kinetic.Rect({
+          x: stage.getWidth()/2,
+          y: stage.getHeight()/2,
+          width: 100,
+          height: 4,
+          fill: 'red',
+          stroke: 'black',
+          strokeWidth: 4,
+          
+        });
+
+        
+        layer.add(redRect);
+        stage.add(layer);
+
+        // one revolution per 4 seconds
+        //speed in radians/sec, rad/s is 9.55 rpm
+        var angularSpeed = radians/sec;
+        var anim = new Kinetic.Animation(function(frame) {
+          var angleDiff = frame.timeDiff * angularSpeed / 1000;
+          redRect.rotate(angleDiff);
+        }, layer);
+
+        anim.start();
+      };
+	
+
 
 // Calculate an object's density. Shade scale is
 // based on values from 0 (rare) to 100 (dense)
