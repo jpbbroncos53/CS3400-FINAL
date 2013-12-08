@@ -145,7 +145,7 @@ function osc (amp, per)
 		width: canvasWidth,
 		fontSize: 32,
 		align: 'center',
-		text: 'Oscillation: ' + (Math.round(oscillation * 100) / 100) +"m/s",
+		text: 'Oscillation: ' + (Math.round(oscillation * 100) / 100) + 'm/s',
 		listening: false,
 		fill: 'black'
 	});
@@ -200,7 +200,7 @@ function angvel (radians, sec)
 		width: canvasWidth,
 		fontSize: 32,
 		align: 'center',
-		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) +"m/s",
+		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) + 'm/s',
 		listening: false,
 		fill: 'black'
 	});
@@ -256,7 +256,7 @@ function density (mass, volume)
 			width: canvasWidth,
 			fontSize: 32,
 			align: 'center',
-			text: 'Density: ' + density + "kg/l",
+			text: 'Density: ' + density + 'kg/l',
 			listening: false,
 			fill: 'black'
 		});
@@ -309,7 +309,7 @@ function lin_velocity (dist, time)
 		width: canvasWidth,
 		fontSize: 32,
 		align: 'center',
-		text: 'Velocity: ' + (Math.round(velocity * 100) / 100) +"m/s",
+		text: 'Velocity: ' + (Math.round(velocity * 100) / 100) + 'm/s',
 		listening: false,
 		fill: 'black'
 	});
@@ -324,44 +324,47 @@ function lin_velocity (dist, time)
 	anim.start();
 };
 
-  function accel (gravity) {
-  	// body...
+function accel (gravity) {
 
-  	layer.destroyChildren();
+	// Clear canvas first
+	layer.destroyChildren();
 
-  	var redRect = new Kinetic.Rect({
-       x: 239,
-        y: 0,
-        width: 100,
-        height: 50,
-          fill: 'red',
-          stroke: 'black',
-          strokeWidth: 4,
-          
-        });
+	var rect = new Kinetic.Rect({
+		x: canvasWidth / 2 - 50,
+		y: 40,
+		width: 100,
+		height: 50,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: 2
+  });
 
-  		layer.add(redRect);
-        stage.add(layer);
+	layer.add(rect);
+  stage.add(layer);
 
-        // one revolution per 4 seconds
-        //speed in radians/sec, rad/s is 9.55 rpm
-        
-       
+	var anim = new Kinetic.Animation(function(frame) {
 
-        var anim = new Kinetic.Animation(function(frame) {
-        	
+		var moveDist = gravity * Math.pow(frame.time / 1000, 2);
+		if (!((rect.getY() + moveDist) > (canvasHeight - 65))) {
+			rect.move(0, moveDist);
+		}
 
-        	redRect.setY(0.5 * gravity * Math.pow(frame.time / 1000, 2));
+	}, layer);
 
-        	
-        	
-          
-        }, layer);
+	// Create the text
+	var text = new Kinetic.Text({
+		x: 0,
+		y: 0,
+		width: canvasWidth,
+		fontSize: 32,
+		align: 'center',
+		text: 'Acceleration: ' + (Math.round(gravity * 100) / 100) + 'm/s^2',
+		listening: false,
+		fill: 'black'
+	});
 
-     
+	// Draw the text
+	layer.add(text);
 
-        anim.start();
-      };
-
-  
-
+	anim.start();
+};
