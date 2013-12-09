@@ -57,6 +57,8 @@ $('.nav > li').click(function () {
 		case '#inc':
 			$('#angle').parent().show(); $('#disp').parent().show();
 			break;
+		case '#weight':
+			$('#mass').parent().show(); $('#gravity').parent().show();
 	}
 
 });
@@ -101,7 +103,62 @@ function calculate ()
 		case '#inc':
 			incline($('#disp').val(), $('#angle').val());
 			break;
+		case '#weight':
+			weight($('#mass').val(), $('#gravity').val());
+			break;
 	}
+}
+
+
+function weight(mass, gravity)
+{
+	// Clear canvas first
+	layer.destroyChildren();
+
+	// Calculate density
+	var weight = mass * gravity;
+
+	// Copy to shade
+	var shade = weight;
+
+	// Move shade value to 0 - 255 scale
+	if (shade > 100) { shade = 100; }
+	if (shade < 0) { shade = 0; }
+	shade = 255 - (( shade / 100 ) * 255);
+
+	// Round result to 2 decimal places for display
+	weight = Math.round(weight * 100) / 100;
+
+	// Create a circle
+	var circle = new Kinetic.Circle({
+		x: canvasWidth / 2,
+		y: canvasHeight / 2,
+		radius: 40,
+		fillRGB: {r: shade, g: shade, b: shade},
+		stroke: 'black',
+		strokeWidth: 2
+	});
+
+	// Draw the circle
+	layer.add(circle);
+
+	// Create the text
+	var text = new Kinetic.Text({
+			x: 0,
+			y: 0,
+			width: canvasWidth,
+			fontSize: 32,
+			align: 'center',
+			text: 'Weight: ' + weight + 'lbs',
+			listening: false,
+			fill: 'black'
+		});
+
+	// Draw the text
+	layer.add(text);
+
+	// Render the stage
+	stage.draw();
 }
 
 // Calculate an object's oscillation. Shape will
@@ -421,13 +478,13 @@ function incline(displacement, angle)
 
         var anim = new Kinetic.Animation(function(frame) 
         {
+        	linearGradCircle.setX(linearGradCircle.getX() + 3);
+        	linearGradCircle.setY(linearGradCircle.getY() + 1);
         	if(linearGradCircle.getY() == canvasHeight + 50)
         	{
         		linearGradCircle.setX(35);
         		linearGradCircle.setY(canvasHeight - 140);
         	}
-        	linearGradCircle.setX(linearGradCircle.getX() + 3);
-        	linearGradCircle.setY(linearGradCircle.getY() + 1);
       	}, layer);
 
     var answer = (Math.sqrt((2)*((9.8)*(Math.sin(Math.PI * (angle/180)))*(displacement)))).toFixed(3);
