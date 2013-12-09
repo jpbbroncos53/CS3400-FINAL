@@ -39,6 +39,7 @@
 						<li><a href="#angvelocity">Angular Velocity</a></li>
 						<li><a href="#osc">Oscillation</a></li>
 						<li><a href="#acc">Acceleration</a></li>
+						<li><a href="#inc">Incline</a></li>
 
 					</ul>
 				</div>
@@ -64,11 +65,6 @@
 					<span class="input-group-addon">meters</span>
 				</div>
 				<div class="input-group" style="display: none;">
-					<span class="input-group-addon">Arc Length</span>
-					<input type="text" pattern="[0-9]*" class="form-control" id="arc" />
-					<span class="input-group-addon">radians</span>
-				</div>
-				<div class="input-group" style="display: none;">
 					<span class="input-group-addon">Time</span>
 					<input type="text" pattern="[0-9]*" class="form-control" id="time" />
 					<span class="input-group-addon">seconds</span>
@@ -87,6 +83,16 @@
 					<span class="input-group-addon">Gravity</span>
 					<input type="text" pattern="[0-9]*" class="form-control" id="gravity" />
 					<span class="input-group-addon">m/s<sup>2</sup></span>
+				</div>
+				<div class="input-group" style="display: none;">
+					<span class="input-group-addon">Angle</span>
+					<input type="text" pattern="[0-9]*" class="form-control" id="angle" />
+					<span class="input-group-addon">degrees</span>
+				</div>
+				<div class="input-group" style="display: none;">
+					<span class="input-group-addon">Displacement</span>
+					<input type="text" pattern="[0-9]*" class="form-control" id="disp" />
+					<span class="input-group-addon">meters</span>
 				</div>
 				<div class="btn-group pull-right">
 					<button class="btn btn-default" id="calc">Calculate</button>
