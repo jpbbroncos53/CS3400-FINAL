@@ -1,12 +1,15 @@
 # Physics Application
 
-[Online Demo](http://cs.wmich.edu/~c6maccreery)
+
+[Updated demo](http://cs.wmich.edu/~jzk9790/CS3400-FINAL)
 
 Final Project for Kapenga's CS3400
 
 ### Updates
 
 ---
+
+12/8/13 @ 9:00 _Jacob_ - Acceleration added, Chris fixed going off the page issue and updating fields. Colors changed.
 
 12/8/13 @ 3:00 _Jacob_ - Added animations for linear velocity, angular velocity, and oscillation. Will work on animations for acceleration and some more calculation pages.   
 
