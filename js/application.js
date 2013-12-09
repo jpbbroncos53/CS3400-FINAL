@@ -421,6 +421,11 @@ function incline(displacement, angle)
 
         var anim = new Kinetic.Animation(function(frame) 
         {
+        	if(linearGradCircle.getY() == canvasHeight + 50)
+        	{
+        		linearGradCircle.setX(35);
+        		linearGradCircle.setY(canvasHeight - 140);
+        	}
         	linearGradCircle.setX(linearGradCircle.getX() + 3);
         	linearGradCircle.setY(linearGradCircle.getY() + 1);
       	}, layer);
