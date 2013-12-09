@@ -46,7 +46,7 @@ $('.nav > li').click(function () {
 			$('#dist').parent().show(); $('#time').parent().show();
 			break;
 		case '#angvelocity':
-			$('#dist').parent().show(); $('#time').parent().show();
+			$('#arc').parent().show(); $('#time').parent().show();
 			break;
 		case '#osc':
 			$('#amp').parent().show(); $('#period').parent().show();
@@ -87,7 +87,7 @@ function calculate ()
 			lin_velocity($('#dist').val(), $('#time').val());
 			break;
 		case '#angvelocity':
-			angvel($('#dist').val(), $('#time').val());
+			angvel($('#arc').val(), $('#time').val());
 			break;
 		case '#osc':
 			osc($('#amp').val(), $('#period').val());
@@ -200,7 +200,7 @@ function angvel (radians, sec)
 		width: canvasWidth,
 		fontSize: 32,
 		align: 'center',
-		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) + 'm/s',
+		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) + 'rads/s',
 		listening: false,
 		fill: 'black'
 	});
