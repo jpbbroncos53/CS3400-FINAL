@@ -46,13 +46,16 @@ $('.nav > li').click(function () {
 			$('#dist').parent().show(); $('#time').parent().show();
 			break;
 		case '#angvelocity':
-			$('#arc').parent().show(); $('#time').parent().show();
+			$('#dist').parent().show(); $('#time').parent().show();
 			break;
 		case '#osc':
 			$('#amp').parent().show(); $('#period').parent().show();
 			break;
 		case '#acc':
 			$('#gravity').parent().show();
+			break;
+		case '#inc':
+			$('#angle').parent().show(); $('#disp').parent().show();
 			break;
 	}
 
@@ -87,13 +90,16 @@ function calculate ()
 			lin_velocity($('#dist').val(), $('#time').val());
 			break;
 		case '#angvelocity':
-			angvel($('#arc').val(), $('#time').val());
+			angvel($('#dist').val(), $('#time').val());
 			break;
 		case '#osc':
 			osc($('#amp').val(), $('#period').val());
 			break;
 		case '#acc':
 			accel($('#gravity').val());
+			break;
+		case '#inc':
+			incline($('#disp').val(), $('#angle').val());
 			break;
 	}
 }
@@ -200,7 +206,7 @@ function angvel (radians, sec)
 		width: canvasWidth,
 		fontSize: 32,
 		align: 'center',
-		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) + 'rads/s',
+		text: 'Angular Velocity: ' + (Math.round(angularSpeed * 100) / 100) + 'm/s',
 		listening: false,
 		fill: 'black'
 	});
@@ -367,4 +373,85 @@ function accel (gravity) {
 	layer.add(text);
 
 	anim.start();
+};
+
+function incline(displacement, angle)
+{
+	//window.alert(Math.sin(Math.PI * (angle/180)));
+	layer.destroyChildren();
+	 var triangle = new Kinetic.Shape({
+        	drawFunc: function(context) {
+          	context.beginPath();
+          	context.moveTo(0, stage.getHeight() - 100);
+          	context.lineTo(0, stage.getHeight());
+          	context.lineTo(300, stage.getHeight());
+          	context.closePath();
+          	// KineticJS specific context method
+          	context.fillStrokeShape(this);
+        	},
+        	fill: '#999',
+        	stroke: '#999',
+        	strokeWidth: 4
+      });
+	      
+		var linearGradCircle = new Kinetic.Circle({
+	          x: 35,
+	          y: canvasHeight - 140,
+	          radius: 50,
+	          fillLinearGradientStartPoint: [-25, -25],
+	          fillLinearGradientEndPoint: [25, 25],
+	          fillLinearGradientColorStops: [0, '#999', 1, 'white'],
+	          stroke: '#999',
+	          strokeWidth: 4,
+	          draggable: true
+	        });
+      	// add the triangle shape to the layer
+      	layer.add(triangle);
+        layer.add(linearGradCircle);
+        stage.add(layer);
+
+        var angularSpeed = Math.PI / 2;
+        var anim = new Kinetic.Animation(function(frame) 
+        {
+          var angleDiff = frame.timeDiff * angularSpeed / 1000;
+          linearGradCircle.rotate(angleDiff);
+        }, layer);
+
+        anim.start();
+
+        var anim = new Kinetic.Animation(function(frame) 
+        {
+        	linearGradCircle.setX(linearGradCircle.getX() + 3);
+        	linearGradCircle.setY(linearGradCircle.getY() + 1);
+      	}, layer);
+
+    var answer = (Math.sqrt((2)*((9.8)*(Math.sin(Math.PI * (angle/180)))*(displacement)))).toFixed(3);
+      	// Create the text
+	var text = new Kinetic.Text({
+		x: 0,
+		y: 0,
+		width: canvasWidth,
+		fontSize: 32,
+		align: 'center',
+		text: 'Velocity: ' + answer + 'm/s\u00B2',
+		listening: false,
+		fill: 'black'
+	});
+
+	var text1 = new Kinetic.Text({
+		x: 0,
+		y: 40,
+		width: canvasWidth,
+		fontSize: 10,
+		align: 'center',
+		text: '*Display is just a representation of the function. Input values have no effect on it',
+		listening: false,
+		fill: 'black'
+	});
+
+	// Draw the text
+	layer.add(text);
+	layer.add(text1);
+
+      anim.start();
 };
