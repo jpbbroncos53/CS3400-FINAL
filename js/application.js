@@ -401,7 +401,7 @@ function incline(displacement, angle)
 	          fillLinearGradientStartPoint: [-25, -25],
 	          fillLinearGradientEndPoint: [25, 25],
 	          fillLinearGradientColorStops: [0, '#999', 1, 'white'],
-	          stroke: '#999',
+	          stroke: 'black',
 	          strokeWidth: 4,
 	          draggable: true
 	        });
