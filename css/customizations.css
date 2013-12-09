@@ -28,10 +28,11 @@ h1 > small {
 	margin-bottom: 10px;
 }
 
+.btn-group {
+	margin-bottom: 10px;
+}
+
 @media only screen and (max-device-width: 480px) {
-	.col-md-4 {
-		margin-bottom: 20px;
-	}
 
 	small:before {
 		content: '\A';

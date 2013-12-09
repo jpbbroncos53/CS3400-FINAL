@@ -358,7 +358,7 @@ function accel (gravity) {
 		width: canvasWidth,
 		fontSize: 32,
 		align: 'center',
-		text: 'Acceleration: ' + (Math.round(gravity * 100) / 100) + 'm/s^2',
+		text: 'Acceleration: ' + (Math.round(gravity * 100) / 100) + 'm/s\u00B2',
 		listening: false,
 		fill: 'black'
 	});
